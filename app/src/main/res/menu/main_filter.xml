@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/rooms"
+        android:orderInCategory="1"
+        android:title="Комнаты"
+        />
+    <item
+        android:id="@+id/debtForRooms"
+        android:orderInCategory="2"
+        android:title="Долги (номера)" />
+    <item
+        android:id="@+id/debtForKitchen"
+        android:orderInCategory="3"
+        android:title="Долги (кухня)" />
+    <item
+        android:id="@+id/orderForKitchen"
+        android:orderInCategory="4"
+        android:title="Заказы на кухню" />
+</menu>

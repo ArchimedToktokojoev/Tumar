@@ -1,0 +1,287 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <!-- Filter bar -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorFilter"
+        >
+        <ImageView
+            android:id="@+id/imgFilter"
+            android:layout_width="80dp"
+            android:layout_height="40dp"
+            android:src="@drawable/ic_furniture"
+            />
+
+        <TextView
+            android:id="@+id/txtFilter"
+            android:layout_gravity="center_vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Комнаты"
+            android:textColor="@color/colorFilterText"
+            android:textSize="20dp"
+            />
+
+    </LinearLayout>
+
+    <!-- 3B Room -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:weightSum="2"
+        android:layout_weight="1">
+
+        <!-- Left room -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/room_button_right"
+            android:layout_weight="1"
+            android:layout_marginRight="10dp">
+        <ImageButton
+            android:layout_width="130dp"
+            android:layout_height="100dp"
+            android:background="#00000000"
+            android:src="@drawable/ic_three_beds_horizontal_green"
+            android:text="1dsfdsfds"
+            android:tag="img7"
+            />
+        <Button
+            android:layout_width="40dp"
+            android:layout_height="wrap_content"
+            android:background="#00000000"
+            android:drawableBottom="@drawable/ic_lock80"
+            android:text="19"
+            android:textSize="25dp"
+            android:tag="btn7"
+            />
+        </LinearLayout>
+
+        <!-- Right room -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@drawable/room_button_left"
+            android:layout_marginLeft="10dp">
+            <Button
+                android:layout_width="40dp"
+                android:layout_height="wrap_content"
+                android:background="#00000000"
+                android:drawableBottom="@drawable/ic_lock80"
+                android:text="19"
+                android:textSize="25dp"
+                android:tag="img8"
+                />
+
+            <ImageButton
+                android:layout_width="130dp"
+                android:layout_height="100dp"
+                android:background="#00000000"
+                android:src="@drawable/ic_three_beds_horizontal_green"
+                android:text="1dsfdsfds"
+                android:tag="btn8"
+                />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <!-- 2B Room -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:weightSum="2"
+        android:layout_weight="1">
+
+        <!-- Left room -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/room_button_right"
+            android:layout_weight="1"
+            android:layout_marginRight="10dp">
+            <ImageButton
+                android:layout_width="130dp"
+                android:layout_height="100dp"
+                android:background="#00000000"
+                android:src="@drawable/ic_two_beds_horizontal_green"
+                android:text="1dsfdsfds"
+                android:tag="img5"
+                />
+            <Button
+                android:layout_width="40dp"
+                android:layout_height="wrap_content"
+                android:background="#00000000"
+                android:drawableBottom="@drawable/ic_lock80"
+                android:text="19"
+                android:textSize="25dp"
+                android:tag="btn5"
+                />
+        </LinearLayout>
+
+        <!-- Right room -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@drawable/room_button_left"
+            android:layout_marginLeft="10dp">
+
+            <Button
+                android:layout_width="40dp"
+                android:layout_height="wrap_content"
+                android:background="#00000000"
+                android:drawableBottom="@drawable/ic_lock80"
+                android:text="19"
+                android:textSize="25dp"
+                android:tag="img6"
+                />
+            <ImageButton
+                android:layout_width="130dp"
+                android:layout_height="100dp"
+                android:background="#00000000"
+                android:src="@drawable/ic_two_beds_horizontal_green"
+                android:text="1dsfdsfds"
+                android:tag="btn6"
+                />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <!-- 2B Room -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:weightSum="2"
+        android:layout_weight="1">
+
+        <!-- Left room -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/room_button_right"
+            android:layout_weight="1"
+            android:layout_marginRight="10dp">
+            <ImageButton
+                android:layout_width="130dp"
+                android:layout_height="100dp"
+                android:background="#00000000"
+                android:src="@drawable/ic_two_beds_horizontal_green"
+                android:text="1dsfdsfds"
+                android:tag="img3"
+                />
+            <Button
+                android:layout_width="40dp"
+                android:layout_height="wrap_content"
+                android:background="#00000000"
+                android:drawableBottom="@drawable/ic_lock80"
+                android:text="19"
+                android:textSize="25dp"
+                android:tag="btn3"
+                />
+        </LinearLayout>
+
+        <!-- Right room -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@drawable/room_button_left"
+            android:layout_marginLeft="10dp">
+
+            <Button
+                android:layout_width="40dp"
+                android:layout_height="wrap_content"
+                android:background="#00000000"
+                android:drawableBottom="@drawable/ic_lock80"
+                android:text="19"
+                android:textSize="25dp"
+                android:tag="img4"
+                />
+            <ImageButton
+                android:layout_width="130dp"
+                android:layout_height="100dp"
+                android:background="#00000000"
+                android:src="@drawable/ic_two_beds_horizontal_green"
+                android:text="1dsfdsfds"
+                android:tag="btn4"
+                />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <!-- 2B Room -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:weightSum="2"
+        android:layout_weight="1">
+
+        <!-- Left room -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/room_button_right"
+            android:layout_weight="1"
+            android:layout_marginRight="10dp">
+            <ImageButton
+                android:layout_width="130dp"
+                android:layout_height="100dp"
+                android:background="#00000000"
+                android:src="@drawable/ic_two_beds_horizontal_green"
+                android:text="1dsfdsfds"
+                android:tag="img1"
+                />
+            <Button
+                android:layout_width="40dp"
+                android:layout_height="wrap_content"
+                android:background="#00000000"
+                android:drawableBottom="@drawable/ic_lock80"
+                android:text="19"
+                android:textSize="25dp"
+                android:tag="btn1"
+                />
+        </LinearLayout>
+
+        <!-- Right room -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@drawable/room_button_left"
+            android:layout_marginLeft="10dp">
+
+            <Button
+                android:layout_width="40dp"
+                android:layout_height="wrap_content"
+                android:background="#00000000"
+                android:drawableBottom="@drawable/ic_lock80"
+                android:text="19"
+                android:textSize="25dp"
+                android:tag="img2"
+                />
+            <ImageButton
+                android:layout_width="130dp"
+                android:layout_height="100dp"
+                android:background="#00000000"
+                android:src="@drawable/ic_two_beds_horizontal_green"
+                android:text="1dsfdsfds"
+                android:tag="btn2"
+                />
+
+        </LinearLayout>
+
+    </LinearLayout>
+</LinearLayout>

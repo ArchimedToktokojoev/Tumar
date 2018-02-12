@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#00BCD4</color>
+    <color name="colorPrimaryDark">#00838F</color>
+    <color name="colorActionBarBack">#00ACC1</color>
+    <color name="colorActionBarText">#000000</color>
+    <color name="colorAccent">#FF4081</color>
+    <color name="colorFilter">#446CB3</color>
+    <color name="colorFilterText">#fff</color>
+    <color name="colorGreen">#4CAF50</color>
+    <color name="colorDeepOrange">#FF5722</color>
+    <color name="colorRed">#F44336</color>
+    <color name="colorEditable">#000000</color>
+    <color name="colorBackEditable">#d7d5d4</color>
+</resources>
