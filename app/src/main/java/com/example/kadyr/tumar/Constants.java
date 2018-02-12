@@ -9,7 +9,13 @@ public class Constants {
     public static final int FilterDebtRoom = 2;
     public static final int FilterDebtKitchen = 3;
     public static final int FilterOrderKitchen = 4;
+
     public static final int RoomStatusFree = 0;
     public static final int RoomStatusBusy = 1;
+
+    public static final int PaymentForCheckining = 0;
+    public static final int PaymentForKitchen = 1;
+
+
 
 }

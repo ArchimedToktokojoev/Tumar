@@ -57,6 +57,7 @@
 
 
             <EditText
+                android:id="@+id/dayCount"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:ems="3"
@@ -79,6 +80,7 @@
                 android:textSize="17dp"></TextView>
 
             <EditText
+                android:id="@+id/totalSum"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:ems="5"
@@ -101,6 +103,7 @@
                 android:textSize="17dp"></TextView>
 
             <EditText
+                android:id="@+id/paidSum"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:ems="5"
@@ -126,6 +129,7 @@
 
 
             <EditText
+                android:id="@+id/nameClient"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"

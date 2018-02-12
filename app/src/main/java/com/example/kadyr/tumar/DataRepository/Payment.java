@@ -1,5 +1,9 @@
 package com.example.kadyr.tumar.DataRepository;
 
+import android.content.ContentValues;
+
+import com.example.kadyr.tumar.DatabaseHelper;
+
 /**
  * Created by Kadyr on 2/2/2018.
  */
@@ -11,6 +15,7 @@ public class Payment {
     private int IdRoom;
     private long Date;
     private int OperationType;
+
 
     public Payment(int id, double sum, int idUser, int idRoom, long date, int operationType){
         Id = id;
@@ -39,5 +44,37 @@ public class Payment {
     public int getOperationType(){ return OperationType;}
     public void setOperationType(int operationType){ OperationType = operationType;}
 
+
+    public long Insert(){
+
+        ContentValues cv = new ContentValues();
+        cv.put("Sum",this.Sum);
+        cv.put("IdUser", this.IdUser);
+        cv.put("IdRoom", this.IdRoom);
+        cv.put("Date", this.Date);
+        cv.put("OperationType", this.OperationType);
+
+        return  DatabaseHelper.GetInstance().database.insert("Payments", null, cv);
+    }
+
+    public long Delete(){
+
+        String whereClause = "Id = ?";
+        String[] whereArgs = new String[]{String.valueOf(this.Id)};
+        return DatabaseHelper.GetInstance().database.delete("Payments", whereClause, whereArgs);
+    }
+
+    public long Update(){
+
+        String whereClause = "Id" + "=" + String.valueOf(this.Id);
+        ContentValues cv = new ContentValues();
+        cv.put("Sum",this.Sum);
+        cv.put("IdUser", this.IdUser);
+        cv.put("IdRoom", this.IdRoom);
+        cv.put("Date", this.Date);
+        cv.put("OperationType", this.OperationType);
+
+        return DatabaseHelper.GetInstance().database.update("Payments", cv, whereClause, null);
+    }
 
 }

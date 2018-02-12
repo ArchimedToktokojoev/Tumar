@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 
 import android.database.Cursor;
+import android.provider.ContactsContract;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Html;
@@ -40,7 +41,7 @@ public class MainActivity extends AppCompatActivity implements LoginFragment.onD
 
         }
 
-          DatabaseHelper.GetInstance(getApplicationContext()).create_db();
+         DatabaseHelper.GetInstance(getApplicationContext()).create_db();
 
         LoginFragment LoginFragment = new LoginFragment();
            LoginFragment.show(getSupportFragmentManager(), "custom");

@@ -13,11 +13,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import com.example.kadyr.tumar.DataRepository.Room;
 
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class CheckInFragment extends android.app.DialogFragment implements View.OnClickListener {
@@ -103,8 +105,32 @@ public class CheckInFragment extends android.app.DialogFragment implements View.
 
 
     public void DoCheckIn(){
+
+        TextView tv = v.findViewById(R.id.dateIn);
+        String s=tv.getText().toString();
+        SimpleDateFormat format = new SimpleDateFormat();
+        format.applyPattern("dd/MM/yyyy");
+        Date docDate = null;
+        try{
+            docDate= format.parse(s);
+        } catch(Exception ex){
+            throw new RuntimeException(ex);
+        }
+
+        EditText etDayCnt = v.findViewById(R.id.dayCount);
+        int dayCount = Integer.valueOf(etDayCnt.getText().toString());
+
+        EditText etTotalSum = v.findViewById(R.id.totalSum);
+        double sumTotal = Double.valueOf(etTotalSum.getText().toString());
+
+        EditText etPaidSum = v.findViewById(R.id.paidSum);
+        double sumPaid = Double.valueOf(etPaidSum.getText().toString());
+
+        EditText etNameClient = v.findViewById(R.id.nameClient);
+        String nameClient = etNameClient.getText().toString();
+
         if(room !=null)
-            room.CheckIn(PublicVariables.CurrentUser.GetId(),new Date(),0,0,0,0);
+            room.DoCheckin(docDate, dayCount, sumTotal, sumPaid, nameClient);
         mListener.onFloorUpdate();
     }
     public void CloseFragment(){

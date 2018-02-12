@@ -5,10 +5,14 @@ import android.database.Cursor;
 import android.database.DatabaseUtils;
 import android.support.annotation.NonNull;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.example.kadyr.tumar.Constants;
 import com.example.kadyr.tumar.DatabaseHelper;
+import com.example.kadyr.tumar.PublicVariables;
 
+import java.time.Period;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -24,13 +28,15 @@ public class Room {
     private int Status;
     private int IdRoomType;
     private int IdRoomGroup;
+    private Date DateCheckOut;
 
-    public Room(int id, String name, int status, int idRoomType, int idRoomGroup){
+    public Room(int id, String name, int status, int idRoomType, int idRoomGroup, Date dateCheckout){
         Id = id;
         Name = name;
         Status = status;
         IdRoomType = idRoomType;
         IdRoomGroup=idRoomGroup;
+        DateCheckOut = dateCheckout;
     }
 
     public int getId(){return Id;}
@@ -48,11 +54,15 @@ public class Room {
     public int getIdRoomGroup(){ return IdRoomGroup;}
     public void setIdRoomGroup(int idRoomGroup){ IdRoomGroup=idRoomGroup;}
 
+    private Date getDateCheckOut() { return DateCheckOut;}
+    private void setDateCheckOut(Date dateCheckOut){ this.DateCheckOut = dateCheckOut;}
+
     public int GetBedsCount() {
         return RoomType.GetRoomType(IdRoomType).getBedsCount();
     }
-    public int CheckOutDays() {
-        return new Random().nextInt(30)+1;
+    public long CheckOutDays() {
+
+        return ((DateCheckOut.getTime()-System.currentTimeMillis())/(24*60*60*1000)+1);
     }
 
 
@@ -77,15 +87,37 @@ public class Room {
         Cursor cursor = DatabaseHelper.GetInstance().database.rawQuery("SELECT * FROM Rooms where id="+String.valueOf(id), null);
         if(cursor.getCount()!=0){
                 cursor.moveToFirst();
-                String name = cursor.getString(cursor.getColumnIndex("Name"));
-                int status= cursor.getInt(cursor.getColumnIndex("Status"));
-                int idRoomType = cursor.getInt(cursor.getColumnIndex("IdRoomType"));
-                int idRoomGroup = cursor.getInt(cursor.getColumnIndex("IdRoomGroup"));
-                ret = new Room( id,  name,  status, idRoomType,  idRoomGroup);
-
+            String name = cursor.getString(cursor.getColumnIndex("Name"));
+            int status= cursor.getInt(cursor.getColumnIndex("Status"));
+            int idRoomType = cursor.getInt(cursor.getColumnIndex("IdRoomType"));
+            int idRoomGroup = cursor.getInt(cursor.getColumnIndex("IdRoomGroup"));
+            Date dateCheckout = new Date(cursor.getLong(cursor.getColumnIndex("DateCheckout")));
+            ret =  new Room( id,  name,  status, idRoomType,  idRoomGroup, dateCheckout);
         }
         cursor.close();
         return  ret;
+    }
+
+    public void DoCheckin(Date dateCheckin, int dayCount, double sum, double paid, String nameClient )
+    {
+        Checkining newCheckining = new Checkining(0, this.Id, PublicVariables.CurrentUser.GetId(), dateCheckin, dayCount, sum-paid, sum);
+        newCheckining.Insert();
+
+        if(paid!=0)
+        {
+            Payment newPayment = new Payment(0, paid, PublicVariables.CurrentUser.GetId(), this.Id, dateCheckin.getTime(), Constants.PaymentForCheckining);
+            newPayment.Insert();
+        }
+
+
+        ContentValues cv = new ContentValues();
+        cv.put("Status", Constants.RoomStatusBusy);
+        cv.put("DateCheckout",dateCheckin.getTime() + dayCount*24*60*60*1000);
+        DatabaseHelper.GetInstance().database.
+        update("Rooms", cv, "Id=" + String.valueOf(Id), null);
+
+
+
     }
 
     public boolean CheckIn(int idUser, Date dateOper,int daysCount, double summa, double smpayed, int idClient){
@@ -109,6 +141,16 @@ public class Room {
         return getRooms("SELECT * FROM Rooms Order by Name");
     }
 
+    private static Room cursorToRoom(Cursor cursor){
+        int id = cursor.getInt(cursor.getColumnIndex("Id"));
+        String name = cursor.getString(cursor.getColumnIndex("Name"));
+        int status= cursor.getInt(cursor.getColumnIndex("Status"));
+        int idRoomType = cursor.getInt(cursor.getColumnIndex("IdRoomType"));
+        int idRoomGroup = cursor.getInt(cursor.getColumnIndex("IdRoomGroup"));
+        Date dateCheckout = new Date(cursor.getLong(cursor.getColumnIndex("DateCheckout")));
+        return new Room( id,  name,  status, idRoomType,  idRoomGroup, dateCheckout);
+    }
+
     @NonNull
     private static List<Room> getRooms(String sql) {
         List<Room> ret = new ArrayList<Room>();
@@ -116,12 +158,15 @@ public class Room {
         if(cursor.getCount()!=0){
             do {
                 cursor.moveToNext();
+                Log.d("DateCheckout", String.valueOf(cursor.getColumnIndex("DateCheckout")));
                 int id = cursor.getInt(cursor.getColumnIndex("Id"));
                 String name = cursor.getString(cursor.getColumnIndex("Name"));
                 int status= cursor.getInt(cursor.getColumnIndex("Status"));
                 int idRoomType = cursor.getInt(cursor.getColumnIndex("IdRoomType"));
                 int idRoomGroup = cursor.getInt(cursor.getColumnIndex("IdRoomGroup"));
-                ret.add(new Room( id,  name,  status, idRoomType,  idRoomGroup));
+                Date dateCheckout = new Date(cursor.getLong(cursor.getColumnIndex("DateCheckout")));
+
+                ret.add(new Room( id,  name,  status, idRoomType,  idRoomGroup, dateCheckout));
 
             }
             while(!cursor.isLast());
