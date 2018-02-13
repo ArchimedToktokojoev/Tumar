@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.example.kadyr.tumar.DataRepository.Client;
 import com.example.kadyr.tumar.DataRepository.Room;
 
 public class OperationFragment extends DialogFragment implements OnClickListener {
@@ -30,6 +31,10 @@ public class OperationFragment extends DialogFragment implements OnClickListener
         Button btn = v.findViewById(R.id.doIn);
         btn.setOnClickListener(this);
         btn.setEnabled(isFree);
+
+        TextView clientName = v.findViewById(R.id.clientName);
+        Client client = room.GetClient();
+        clientName.setText(client==null?"":client.getName());
 
         btn =  v.findViewById(R.id.doOut);
         btn.setOnClickListener(this);

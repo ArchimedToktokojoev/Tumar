@@ -15,6 +15,7 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.TextView;
 
+import com.example.kadyr.tumar.DataRepository.Client;
 import com.example.kadyr.tumar.DataRepository.Room;
 
 
@@ -52,6 +53,8 @@ public class CheckOutFragment extends android.app.DialogFragment implements View
 
         String idRoom = getArguments().getString("idRoom");
         room = Room.GetRoom(Integer.valueOf(idRoom));
+
+
 
         TextView tv = v.findViewById(R.id.dateIn);
         tv.setText(String.valueOf(dt.getDate()) + "/" + (dt.getMonth()+1) + "/" + (dt.getYear()+1900));

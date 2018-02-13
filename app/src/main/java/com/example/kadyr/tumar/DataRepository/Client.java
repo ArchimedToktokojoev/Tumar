@@ -1,0 +1,118 @@
+package com.example.kadyr.tumar.DataRepository;
+
+import android.content.ContentValues;
+import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.media.Image;
+import android.media.ImageReader;
+import android.text.Html;
+import android.util.Log;
+
+import com.example.kadyr.tumar.CommonFunctions;
+import com.example.kadyr.tumar.DatabaseHelper;
+
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.InputStream;
+import java.sql.Blob;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
+/**
+ * Created by Kadyr on 2/13/2018.
+ */
+
+public class Client {
+    private int id;
+    private String name;
+    private Bitmap picture;
+
+    public Client(int id, String name, Bitmap picture){
+        this.id = id;
+        this.name = name;
+        this.picture = picture;
+    }
+
+    public int getId(){return this.id;}
+    public void setId(int id){this.id = id;}
+
+    public String getName(){return this.name;}
+    public void setName(String name){ this.name = name;}
+
+    public Bitmap getPicture(){return this.picture;}
+    public void setPicture(Bitmap picture){this.picture = picture;}
+
+    public static List<Client> GetClients()
+    {
+        String sql = "SELECT * FROM Clients Order by Name";
+        return getClientsByQuery(sql);
+    }
+
+    public static Client GetClient(int id){
+        String sql = "SELECT * FROM Clients where Id=" + String.valueOf(id);
+        List<Client> ret = getClientsByQuery(sql);
+        if(ret.size()>0)
+            return ret.get(0);
+        return null;
+    }
+
+    public static Client GetClientbyName(String name){
+        String sql = "SELECT * FROM Clients Where Name=\"" + name +"\"";
+        List<Client> clients = getClientsByQuery(sql);
+        return clients.size()==0?null:clients.get(0);
+    }
+
+    private static List<Client> getClientsByQuery(String sql) {
+        List<Client> ret = new ArrayList<Client>();
+        Cursor cursor = DatabaseHelper.GetInstance().database.rawQuery(sql, null);
+        if(cursor.getCount()!=0){
+            do {
+                cursor.moveToNext();
+                int id = cursor.getInt(cursor.getColumnIndex("Id"));
+                String name = cursor.getString(cursor.getColumnIndex("Name"));
+
+                Bitmap theImage=null;
+                byte[] blob = cursor.getBlob(cursor.getColumnIndex("Picture"));
+                if(blob!=null){
+                    ByteArrayInputStream imageStream = new ByteArrayInputStream(blob);
+                    theImage= BitmapFactory.decodeStream(imageStream);
+                }
+                ret.add(new Client( id,  name, theImage));
+
+            }
+            while(!cursor.isLast());
+        }
+        cursor.close();
+        return  ret;
+    }
+
+    public long Insert(){
+
+        ContentValues cv = new ContentValues();
+        cv.put("Name",this.name);
+        if(picture!=null) cv.put("Picture", CommonFunctions.BitmapToByteArray(picture));
+
+        return  DatabaseHelper.GetInstance().database.insert("Clients", null, cv);
+    }
+
+
+
+    public long Delete(){
+
+        String whereClause = "Id = ?";
+        String[] whereArgs = new String[]{String.valueOf(this.id)};
+        return DatabaseHelper.GetInstance().database.delete("Clients", whereClause, whereArgs);
+    }
+
+    public long Update(){
+
+        String whereClause = "Id" + "=" + String.valueOf(this.id);
+        ContentValues cv = new ContentValues();
+        cv.put("Name",this.name);
+        cv.put("Picture", CommonFunctions.BitmapToByteArray(picture));
+
+        return DatabaseHelper.GetInstance().database.update("Clients", cv, whereClause, null);
+    }
+}

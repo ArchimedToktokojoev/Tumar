@@ -98,9 +98,41 @@ public class Room {
         return  ret;
     }
 
+    public Client GetClient(){
+        if(Status==Constants.RoomStatusFree) return null;
+        Client client = null;
+
+
+        Cursor cursor = DatabaseHelper.GetInstance().database.
+                rawQuery("SELECT IdClient FROM Checkinings Where IdRoom="+String.valueOf(this.Id) +
+                        " order by DateCheckin desc limit 1", null);
+
+        if(cursor.getCount()!=0){
+            cursor.moveToFirst();
+            int id = cursor.getInt(cursor.getColumnIndex("IdClient"));
+            client = Client.GetClient(id);
+         }
+        cursor.close();
+
+        return client;
+    }
+
     public void DoCheckin(Date dateCheckin, int dayCount, double sum, double paid, String nameClient )
     {
-        Checkining newCheckining = new Checkining(0, this.Id, PublicVariables.CurrentUser.GetId(), dateCheckin, dayCount, sum-paid, sum);
+        Integer idClient=null;
+
+        nameClient = nameClient.trim();
+        if(nameClient!="") {
+            Client client = Client.GetClientbyName(nameClient);
+            if (client==null) {
+                Client newClient = new Client(0,nameClient,null);
+                idClient = (int)newClient.Insert();
+            } else {
+                idClient=client.getId();
+            }
+        }
+
+        Checkining newCheckining = new Checkining(0, this.Id, PublicVariables.CurrentUser.GetId(), dateCheckin, dayCount, sum-paid, sum, idClient);
         newCheckining.Insert();
 
         if(paid!=0)

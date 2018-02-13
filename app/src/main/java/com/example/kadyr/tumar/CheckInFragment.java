@@ -16,6 +16,8 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.example.kadyr.tumar.DataRepository.Checkining;
+import com.example.kadyr.tumar.DataRepository.Client;
 import com.example.kadyr.tumar.DataRepository.Room;
 
 
@@ -57,6 +59,9 @@ public class CheckInFragment extends android.app.DialogFragment implements View.
         TextView vd = v.findViewById(R.id.viewTitle);
         vd.setText("Заселение.  Комната - "+room.getName());
         TextView dateIn = v.findViewById(R.id.dateIn ) ;
+
+
+
         dateIn.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                        DatePickerDialog tpd = new DatePickerDialog(getActivity(), myCallBack,

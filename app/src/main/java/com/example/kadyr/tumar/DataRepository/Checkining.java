@@ -18,8 +18,9 @@ public class Checkining {
     private int DayCount;
     private double Debt;
     private double Sum;
+    private Integer IdClient;
 
-    Checkining(int id, int idRoom, int idUser, Date dateCheckin, int dayCount, double debt, double sum ){
+    Checkining(int id, int idRoom, int idUser, Date dateCheckin, int dayCount, double debt, double sum, Integer idClient ){
         Id = id;
         IdRoom = idRoom;
         IdUser = idUser;
@@ -27,6 +28,7 @@ public class Checkining {
         DayCount = dayCount;
         Debt = debt;
         Sum = sum;
+        IdClient = idClient;
     }
 
     public int getId(){ return Id;}
@@ -50,6 +52,9 @@ public class Checkining {
     public double getSum(){return Sum;}
     public void setSum(double sum){ Sum = sum;}
 
+    public Integer getIdClient(){return IdClient;}
+    public void setIdClient(Integer idClient){IdClient = idClient;}
+
 
     public long Insert(){
 
@@ -60,6 +65,8 @@ public class Checkining {
         cv.put("DayCount", this.DayCount);
         cv.put("Debt", this.Debt);
         cv.put("Sum", this.Sum);
+        cv.put("IdClient",this.IdClient);
+
         return  DatabaseHelper.GetInstance().database.insert("Checkinings", null, cv);
     }
 
@@ -80,6 +87,7 @@ public class Checkining {
         cv.put("DayCount", this.DayCount);
         cv.put("Debt", this.Debt);
         cv.put("Sum", this.Sum);
+        cv.put("IdClient",this.IdClient);
 
         return DatabaseHelper.GetInstance().database.update("Checkining", cv, whereClause, null);
     }
