@@ -4,9 +4,13 @@ import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.database.Cursor;
+import android.database.SQLException;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,6 +18,9 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.FilterQueryProvider;
+import android.widget.ListView;
+import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
 
 import com.example.kadyr.tumar.DataRepository.Checkining;
@@ -25,6 +32,12 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class CheckInFragment extends android.app.DialogFragment implements View.OnClickListener {
+
+
+    Cursor clientCursor;
+    SimpleCursorAdapter clientAdapter;
+    EditText clientName ;
+    ListView clientList;
 
 
     private OnCheckInFragmentListener mListener;
@@ -71,6 +84,10 @@ public class CheckInFragment extends android.app.DialogFragment implements View.
         });
         TextView tv = v.findViewById(R.id.dateIn);
         tv.setText(String.valueOf(dt.getDate()) + "/" + (dt.getMonth()+1) + "/" + (dt.getYear()+1900));
+
+        clientName = v.findViewById(R.id.nameClient) ;
+        clientList = v.findViewById(R.id.clientList);
+
         return v;
     }
 
@@ -79,6 +96,47 @@ public class CheckInFragment extends android.app.DialogFragment implements View.
         void onFloorUpdate();
 
     }
+
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        try {
+            clientCursor = DatabaseHelper.GetInstance().database.rawQuery("select Id _id,* from clients", null);
+
+            String[] headers = new String[]{"Name"};
+            clientAdapter = new SimpleCursorAdapter(getActivity(), android.R.layout.simple_list_item_1,
+                    clientCursor, headers, new int[]{android.R.id.text1}, 0);
+
+            if(!clientName.getText().toString().isEmpty())
+                clientAdapter.getFilter().filter(clientName.getText().toString());
+
+            // установка слушателя изменения текста
+            clientName.addTextChangedListener(new TextWatcher() {
+
+                public void afterTextChanged(Editable s) { }
+
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
+                // при изменении текста выполняем фильтрацию
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+                    clientAdapter.getFilter().filter(s.toString());
+                }
+            });
+
+            // устанавливаем провайдер фильтрации
+            clientAdapter.setFilterQueryProvider(new FilterQueryProvider() {
+                @Override
+                public Cursor runQuery(CharSequence constraint) {
+                    return Client.GetFilteredCursor(constraint.toString());
+                }
+            });
+
+            clientList.setAdapter(clientAdapter);
+        }
+        catch (SQLException ex){}
+    }
+
 
     @Override
     public void onAttach(Context context) {

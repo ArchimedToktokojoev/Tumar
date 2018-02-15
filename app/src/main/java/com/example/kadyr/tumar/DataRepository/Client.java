@@ -64,6 +64,13 @@ public class Client {
         return clients.size()==0?null:clients.get(0);
     }
 
+    public static Cursor GetFilteredCursor(String filterKey){
+        String sql = (filterKey == null || filterKey.length() == 0) ?
+                "select Id _id,* from Clients":
+                "select Id _id,* from Clients where name like \"%" + filterKey + "%\"";
+        return DatabaseHelper.GetInstance().database.rawQuery(sql, null);
+    }
+
     private static List<Client> getClientsByQuery(String sql) {
         List<Client> ret = new ArrayList<Client>();
         Cursor cursor = DatabaseHelper.GetInstance().database.rawQuery(sql, null);

@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
 
     <include
@@ -118,7 +120,7 @@
                     android:layout_weight="0"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:text=""
+                    android:text="17"
                     android:textAlignment="center"
                     android:textSize="50dp"
                     android:background="@drawable/group_button_left"
@@ -220,7 +222,14 @@
 
     </LinearLayout>
 
+    <android.support.design.widget.NavigationView
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        app:menu="@menu/navigation_menu"
+        android:layout_gravity="start"
+        >
 
+    </android.support.design.widget.NavigationView>
 
 
 
