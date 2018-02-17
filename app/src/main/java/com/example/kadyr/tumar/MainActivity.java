@@ -26,7 +26,7 @@ import com.example.kadyr.tumar.DataRepository.RoomGroup;
 
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements LoginFragment.onDestroyListener
+public class MainActivity extends AppCompatActivity implements LoginFragment.onDestroyListener, View.OnClickListener
         {
 
     @Override
@@ -37,7 +37,8 @@ public class MainActivity extends AppCompatActivity implements LoginFragment.onD
         Toolbar toolbar = findViewById(R.id.toolbar1);
         if(toolbar!= null){
             setSupportActionBar((toolbar));
-            toolbar.setLogo(R.drawable.logotip);
+            toolbar.setNavigationIcon(R.drawable.logotip);
+            toolbar.setNavigationOnClickListener(this);
 
         }
 
@@ -49,6 +50,13 @@ public class MainActivity extends AppCompatActivity implements LoginFragment.onD
         SharedPreferences settings = getSharedPreferences("Preferences", MODE_PRIVATE);
         PublicVariables.CurrentFilter = settings.getInt("Filter",Constants.FilterPlace);
 
+
+    }
+
+    public void onClick(View view){
+        NavMenuFragment dlg = new NavMenuFragment();
+
+        dlg.show(getFragmentManager(),"openClient");
 
     }
 

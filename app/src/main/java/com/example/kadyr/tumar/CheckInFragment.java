@@ -104,9 +104,9 @@ public class CheckInFragment extends android.app.DialogFragment implements View.
     public void onResume() {
         super.onResume();
         try {
+
             clients = Client.GetClients();
             clientAdapter = new ClientAdapter(getActivity(), clients);
-
             if(!clientName.getText().toString().isEmpty())
                 clientAdapter.getFilter().filter(clientName.getText().toString());
 

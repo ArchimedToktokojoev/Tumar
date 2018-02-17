@@ -98,7 +98,7 @@ public class Client {
                     ByteArrayInputStream imageStream = new ByteArrayInputStream(blob);
                     theImage= BitmapFactory.decodeStream(imageStream);
                 }
-                String telephone = "+9965550036440";
+                String telephone = cursor.getString(cursor.getColumnIndex("Telephone"));
                 ret.add(new Client( id,  name, theImage,telephone));
 
             }
@@ -113,6 +113,7 @@ public class Client {
         ContentValues cv = new ContentValues();
         cv.put("Name",this.name);
         if(picture!=null) cv.put("Picture", CommonFunctions.BitmapToByteArray(picture));
+        cv.put("Telephone",this.telephone);
 
         return  DatabaseHelper.GetInstance().database.insert("Clients", null, cv);
     }
@@ -132,6 +133,7 @@ public class Client {
         ContentValues cv = new ContentValues();
         cv.put("Name",this.name);
         cv.put("Picture", CommonFunctions.BitmapToByteArray(picture));
+        cv.put("Telephone", this.telephone);
 
         return DatabaseHelper.GetInstance().database.update("Clients", cv, whereClause, null);
     }

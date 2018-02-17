@@ -51,6 +51,10 @@ public class ClientAdapter extends BaseAdapter implements Filterable {
         return position;
     }
 
+    public void SetClients(List<Client> newClients){
+        originalData=newClients;
+        filteredData=newClients;
+    }
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent){
@@ -63,7 +67,10 @@ public class ClientAdapter extends BaseAdapter implements Filterable {
         name.setText(client.getName());
         telephone.setText(client.getName());
         Bitmap avatar = client.getPicture();
-       if(avatar!=null)  imageView.setImageBitmap(avatar);
+        if(imageView==null) Log.e("Null", "here is null");
+        else{
+            if(avatar!=null)  imageView.setImageBitmap(avatar);
+        }
 
         return rowView;
     }
@@ -79,9 +86,7 @@ public class ClientAdapter extends BaseAdapter implements Filterable {
         protected void publishResults(CharSequence constraint, FilterResults results) {
             filteredData = (ArrayList<Client>) results.values;
             notifyDataSetChanged();
-            if(filteredData==null) Log.d("axa", "filteredData=null") ;
-            else Log.d("axa", String.valueOf(filteredData.size())) ;
-        }
+                }
 
         @Override
         protected FilterResults performFiltering(CharSequence constraint) {
@@ -106,8 +111,6 @@ public class ClientAdapter extends BaseAdapter implements Filterable {
 
             results.values = nlist;
             results.count = nlist.size();
-            if(nlist==null) Log.d("axa", "nlist=null") ;
-            else Log.d("axa", "nlist="+String.valueOf(nlist.size())) ;
             return results;
         }
     }
