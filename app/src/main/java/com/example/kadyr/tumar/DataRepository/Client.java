@@ -28,11 +28,13 @@ public class Client {
     private int id;
     private String name;
     private Bitmap picture;
+    private String telephone;
 
-    public Client(int id, String name, Bitmap picture){
+    public Client(int id, String name, Bitmap picture, String telephone){
         this.id = id;
         this.name = name;
         this.picture = picture;
+        this.telephone = telephone;
     }
 
     public int getId(){return this.id;}
@@ -43,6 +45,9 @@ public class Client {
 
     public Bitmap getPicture(){return this.picture;}
     public void setPicture(Bitmap picture){this.picture = picture;}
+
+    public String getTelephone(){return this.telephone;}
+    public void setTelephone(String telephone){this.telephone = telephone;}
 
     public static List<Client> GetClients()
     {
@@ -71,6 +76,13 @@ public class Client {
         return DatabaseHelper.GetInstance().database.rawQuery(sql, null);
     }
 
+    public static List<Client> GetFilteredArray(String filterKey){
+        String sql = (filterKey == null || filterKey.length() == 0) ?
+                "select Id _id,* from Clients":
+                "select Id _id,* from Clients where name like \"%" + filterKey + "%\"";
+        return getClientsByQuery(sql);
+    }
+
     private static List<Client> getClientsByQuery(String sql) {
         List<Client> ret = new ArrayList<Client>();
         Cursor cursor = DatabaseHelper.GetInstance().database.rawQuery(sql, null);
@@ -86,7 +98,8 @@ public class Client {
                     ByteArrayInputStream imageStream = new ByteArrayInputStream(blob);
                     theImage= BitmapFactory.decodeStream(imageStream);
                 }
-                ret.add(new Client( id,  name, theImage));
+                String telephone = "+9965550036440";
+                ret.add(new Client( id,  name, theImage,telephone));
 
             }
             while(!cursor.isLast());

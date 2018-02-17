@@ -15,6 +15,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -30,12 +31,13 @@ import com.example.kadyr.tumar.DataRepository.Room;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 public class CheckInFragment extends android.app.DialogFragment implements View.OnClickListener {
 
 
-    Cursor clientCursor;
-    SimpleCursorAdapter clientAdapter;
+    List<Client> clients ;
+    ClientAdapter clientAdapter;
     EditText clientName ;
     ListView clientList;
 
@@ -87,7 +89,7 @@ public class CheckInFragment extends android.app.DialogFragment implements View.
 
         clientName = v.findViewById(R.id.nameClient) ;
         clientList = v.findViewById(R.id.clientList);
-
+        clientList.setVisibility(View.INVISIBLE);
         return v;
     }
 
@@ -102,11 +104,8 @@ public class CheckInFragment extends android.app.DialogFragment implements View.
     public void onResume() {
         super.onResume();
         try {
-            clientCursor = DatabaseHelper.GetInstance().database.rawQuery("select Id _id,* from clients", null);
-
-            String[] headers = new String[]{"Name"};
-            clientAdapter = new SimpleCursorAdapter(getActivity(), android.R.layout.simple_list_item_1,
-                    clientCursor, headers, new int[]{android.R.id.text1}, 0);
+            clients = Client.GetClients();
+            clientAdapter = new ClientAdapter(getActivity(), clients);
 
             if(!clientName.getText().toString().isEmpty())
                 clientAdapter.getFilter().filter(clientName.getText().toString());
@@ -116,21 +115,38 @@ public class CheckInFragment extends android.app.DialogFragment implements View.
 
                 public void afterTextChanged(Editable s) { }
 
-                public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+                }
                 // при изменении текста выполняем фильтрацию
                 public void onTextChanged(CharSequence s, int start, int before, int count) {
 
+
+
+                    clients=Client.GetFilteredArray(s.toString());
                     clientAdapter.getFilter().filter(s.toString());
                 }
             });
 
-            // устанавливаем провайдер фильтрации
-            clientAdapter.setFilterQueryProvider(new FilterQueryProvider() {
+            clientName.setOnFocusChangeListener(new View.OnFocusChangeListener() {
                 @Override
-                public Cursor runQuery(CharSequence constraint) {
-                    return Client.GetFilteredCursor(constraint.toString());
+                public void onFocusChange(View view, boolean hasFocus) {
+                         clientList.setVisibility(hasFocus? View.VISIBLE:
+                                                            View.INVISIBLE);
                 }
             });
+
+            clientList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    // Get the selected item text from ListView
+                    Client selectedItem = (Client) parent.getItemAtPosition(position);
+
+                    // Display the selected item text on TextView
+                    clientName.setText(selectedItem.getName());
+                }
+            });
+
 
             clientList.setAdapter(clientAdapter);
         }

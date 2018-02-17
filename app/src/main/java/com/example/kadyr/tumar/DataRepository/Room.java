@@ -125,7 +125,7 @@ public class Room {
         if(nameClient!="") {
             Client client = Client.GetClientbyName(nameClient);
             if (client==null) {
-                Client newClient = new Client(0,nameClient,null);
+                Client newClient = new Client(0,nameClient,null,"556");
                 idClient = (int)newClient.Insert();
             } else {
                 idClient=client.getId();
