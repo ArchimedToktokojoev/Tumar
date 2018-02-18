@@ -23,6 +23,7 @@ import android.widget.FilterQueryProvider;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.kadyr.tumar.DataRepository.Checkining;
 import com.example.kadyr.tumar.DataRepository.Client;
@@ -209,7 +210,11 @@ public class CheckInFragment extends android.app.DialogFragment implements View.
         String nameClient = etNameClient.getText().toString();
 
         if(room !=null)
-            room.DoCheckin(docDate, dayCount, sumTotal, sumPaid, nameClient);
+            try {
+                room.DoCheckin(docDate, dayCount, sumTotal, sumPaid, nameClient);
+            } catch (Exception e) {
+                Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_LONG).show();
+            }
         mListener.onFloorUpdate();
     }
     public void CloseFragment(){

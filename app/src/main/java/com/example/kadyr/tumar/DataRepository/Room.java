@@ -117,20 +117,20 @@ public class Room {
         return client;
     }
 
-    public void DoCheckin(Date dateCheckin, int dayCount, double sum, double paid, String nameClient )
+    public void DoCheckin(Date dateCheckin, int dayCount, double sum, double paid, String nameClient ) throws Exception
     {
         Integer idClient=null;
 
         nameClient = nameClient.trim();
-        if(nameClient!="") {
-            Client client = Client.GetClientbyName(nameClient);
-            if (client==null) {
-                Client newClient = new Client(0,nameClient,null,"556");
-                idClient = (int)newClient.Insert();
-            } else {
-                idClient=client.getId();
-            }
+
+        try{
+            Client newClient = new Client(0,nameClient,null,"");
+            idClient = (int)newClient.InsertWithExist();
+        }catch (Exception ex){
+            throw ex;
         }
+
+
 
         Checkining newCheckining = new Checkining(0, this.Id, PublicVariables.CurrentUser.GetId(), dateCheckin, dayCount, sum-paid, sum, idClient);
         newCheckining.Insert();

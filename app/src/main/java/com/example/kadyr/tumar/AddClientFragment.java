@@ -62,19 +62,24 @@ public class AddClientFragment extends android.app.DialogFragment implements Vie
                 imageView.buildDrawingCache();
                 picture = imageView.getDrawingCache();
             }
-            if(name.trim()=="") Toast.makeText(getActivity(), "Введите имя клиента!", Toast.LENGTH_LONG).show();
-            else{
-                if(Client.GetClientbyName(name)==null){
-                    Client newClient = new Client(0, name, picture, telephone);
-                    newClient.Insert();
-                    mListener.setClientsList();
-                }
+            Client newClient = new Client(0, name, picture, telephone);
+
+            try{
+                newClient.Insert();
+                mListener.setClientsList();
+                Toast.makeText(getActivity(),"Данные добавлены",Toast.LENGTH_LONG).show();
+
+                getActivity().getFragmentManager().beginTransaction().remove(this).commit();
+            } catch(Exception ex){
+                Toast.makeText(getActivity(), ex.getMessage(), Toast.LENGTH_LONG).show();
+
             }
-            Toast.makeText(getActivity(),"Данные добавлены",Toast.LENGTH_LONG).show();
+
 
         }
 
-            getActivity().getFragmentManager().beginTransaction().remove(this).commit();
+        if(v1.getId()==R.id.btnCancel){ getActivity().getFragmentManager().beginTransaction().remove(this).commit();}
+
 
     }
 

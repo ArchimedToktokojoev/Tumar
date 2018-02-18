@@ -108,7 +108,29 @@ public class Client {
         return  ret;
     }
 
-    public long Insert(){
+    public long InsertWithExist() throws Exception{
+
+        if(name.equals("")){
+            throw new Exception("Имя клиента недопустима!");
+        }
+
+        Client client = Client.GetClientbyName(name);
+        if(client!=null) return client.getId();
+
+        ContentValues cv = new ContentValues();
+        cv.put("Name",this.name);
+        if(picture!=null) cv.put("Picture", CommonFunctions.BitmapToByteArray(picture));
+        cv.put("Telephone",this.telephone);
+
+        return  DatabaseHelper.GetInstance().database.insert("Clients", null, cv);
+    }
+
+    public long Insert() throws Exception {
+
+        if(name.equals("")){
+            throw new Exception("Имя клиента недопустима!");
+        }
+        if(Client.GetClientbyName(name)!=null) throw new Exception("Клиент уже существует!");
 
         ContentValues cv = new ContentValues();
         cv.put("Name",this.name);
