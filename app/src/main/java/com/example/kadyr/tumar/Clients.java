@@ -11,12 +11,13 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.SearchView;
+import android.widget.TextView;
 
 import com.example.kadyr.tumar.DataRepository.Client;
 
 import java.util.List;
 
-public class Clients extends AppCompatActivity implements AddClientFragment.onClickOK {
+public class Clients extends AppCompatActivity implements AddClientFragment.onClickOK, AreYouSureFragment.onClickYES {
 
     ClientAdapter clientAdapter;
     SearchView clientName;
@@ -37,10 +38,25 @@ public class Clients extends AppCompatActivity implements AddClientFragment.onCl
 
         clientsList = findViewById(R.id.clientsList);
         clientName = findViewById(R.id.searchCLient);
-        List<Client> clients = Client.GetClients();
+        final List<Client> clients = Client.GetClients();
         clientAdapter = new ClientAdapter(this, clients);
 
         clientsList.setAdapter(clientAdapter);
+
+        clientsList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                // Get the selected item text from ListView
+                Client selectedClient = (Client) parent.getItemAtPosition(position);
+                DeleteEditClient dlg = new DeleteEditClient();
+
+                Bundle args = new Bundle();
+                args.putString("nameClient", String.valueOf(selectedClient.getName()));
+                dlg.setArguments(args);
+                dlg.show(getFragmentManager(), "showAddEditClient");
+            }
+        });
+
     }
 
 
@@ -74,16 +90,7 @@ public class Clients extends AppCompatActivity implements AddClientFragment.onCl
             });
 
 
-            clientsList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                @Override
-                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    // Get the selected item text from ListView
-                    Client selectedItem = (Client) parent.getItemAtPosition(position);
 
-                    // Display the selected item text on TextView
-
-                }
-            });
 
 
             clientsList.setAdapter(clientAdapter);

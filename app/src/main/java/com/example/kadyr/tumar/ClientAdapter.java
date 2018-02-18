@@ -61,15 +61,18 @@ public class ClientAdapter extends BaseAdapter implements Filterable {
         View rowView = mInflater.inflate(R.layout.client_list, parent, false);
         TextView name =  rowView.findViewById(R.id.name);
         TextView telephone =  rowView.findViewById(R.id.telephone);
-        ImageView imageView =  rowView.findViewById(R.id.icon);
+        ImageView imageView =  rowView.findViewById(R.id.avatar);
         Client client = filteredData.get(position);
 
         name.setText(client.getName());
-        telephone.setText(client.getName());
+        telephone.setText(client.getTelephone());
         Bitmap avatar = client.getPicture();
-        if(imageView==null) Log.e("Null", "here is null");
+        if(imageView==null) Log.e("axa", "here is null");
         else{
-            if(avatar!=null)  imageView.setImageBitmap(avatar);
+            if(avatar!=null){
+                Log.e("axa", "here is not null");
+                imageView.setImageBitmap(avatar);
+            }
         }
 
         return rowView;

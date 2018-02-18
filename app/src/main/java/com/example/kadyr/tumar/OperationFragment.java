@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.kadyr.tumar.DataRepository.Client;
@@ -33,8 +34,12 @@ public class OperationFragment extends DialogFragment implements OnClickListener
         btn.setEnabled(isFree);
 
         TextView clientName = v.findViewById(R.id.clientName);
+        TextView clientTelephone = v.findViewById(R.id.clientTelephone);
+        ImageView imageView = v.findViewById(R.id.pictureClintInOperation);
         Client client = room.GetClient();
         clientName.setText(client==null?"":client.getName());
+
+
 
         btn =  v.findViewById(R.id.doOut);
         btn.setOnClickListener(this);

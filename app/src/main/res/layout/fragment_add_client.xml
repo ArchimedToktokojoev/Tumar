@@ -12,6 +12,7 @@
         android:layout_height="90dp"
         android:layout_gravity="center_horizontal"
         android:src="@drawable/ic_camera_alt_black_24dp"
+
         />
 
     <LinearLayout

@@ -28,20 +28,38 @@
             android:layout_marginRight="10dp"
             android:layout_marginLeft="10dp">
             <ImageView
+                android:id="@+id/pictureClintInOperation"
                 android:layout_width="80dp"
                 android:layout_height="80dp"
                 android:layout_weight="1"
                 android:layout_marginRight="10dp"
                 android:src="@drawable/ic_user"/>
-            <TextView
-                android:id="@+id/clientName"
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_margin="1dp"
-                android:text="Имя клиента"
-                android:textSize="17dp"
-                android:layout_weight="2"/>
+                android:orientation="vertical">
+                <TextView
+                    android:id="@+id/clientName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="10dp"
+                    android:text="Имя клиента"
+                    android:textColor="#000"
+                    android:textSize="17dp"
+                    android:layout_weight="1"/>
+                <TextView
+                    android:id="@+id/clientTelephone"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="10dp"
+                    android:text="Номер клиента"
+                    android:textSize="15dp"
+                    android:layout_weight="1"/>
+
+            </LinearLayout>
+
         </LinearLayout>
 
         <Button

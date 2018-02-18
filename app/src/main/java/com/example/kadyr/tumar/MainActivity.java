@@ -1,9 +1,12 @@
 package com.example.kadyr.tumar;
 
+import android.Manifest;
 import android.content.Intent;
 import android.content.SharedPreferences;
 
+import android.content.pm.PackageManager;
 import android.database.Cursor;
+import android.os.Build;
 import android.provider.ContactsContract;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -49,6 +52,12 @@ public class MainActivity extends AppCompatActivity implements LoginFragment.onD
 
         SharedPreferences settings = getSharedPreferences("Preferences", MODE_PRIVATE);
         PublicVariables.CurrentFilter = settings.getInt("Filter",Constants.FilterPlace);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (checkSelfPermission(Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+                requestPermissions(new String[] {Manifest.permission.CAMERA}, 1);
+            }
+        }
 
 
     }

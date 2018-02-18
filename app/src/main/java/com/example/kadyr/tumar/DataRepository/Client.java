@@ -108,6 +108,7 @@ public class Client {
         return  ret;
     }
 
+
     public long InsertWithExist() throws Exception{
 
         if(name.equals("")){
@@ -149,12 +150,16 @@ public class Client {
         return DatabaseHelper.GetInstance().database.delete("Clients", whereClause, whereArgs);
     }
 
-    public long Update(){
+    public long Update() throws Exception{
+
+        if(name.equals("")){
+            throw new Exception("Имя клиента недопустима!");
+        }
 
         String whereClause = "Id" + "=" + String.valueOf(this.id);
         ContentValues cv = new ContentValues();
         cv.put("Name",this.name);
-        cv.put("Picture", CommonFunctions.BitmapToByteArray(picture));
+        if(picture!=null) cv.put("Picture", CommonFunctions.BitmapToByteArray(picture));
         cv.put("Telephone", this.telephone);
 
         return DatabaseHelper.GetInstance().database.update("Clients", cv, whereClause, null);
