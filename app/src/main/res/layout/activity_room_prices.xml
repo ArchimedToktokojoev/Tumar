@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.example.kadyr.tumar.RoomPrices"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    >
+
+    <TableLayout
+        android:id="@+id/roomPricesTable"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        >
+        <TableRow
+            android:weightSum="3">
+
+            <TextView
+                android:textAlignment="center"
+                android:height="35dp"
+                android:layout_width="1dp"
+                android:layout_weight="1"
+                android:text="Дата"
+                android:textSize="20dp"/>
+
+            <TextView
+                android:textAlignment="center"
+                android:layout_weight="1"
+                android:height="35dp"
+                android:layout_width="1dp"
+                android:text="Тип комнаты"
+                android:textSize="20dp"/>
+
+            <TextView
+                android:textAlignment="center"
+                android:layout_weight="1"
+                android:height="35dp"
+                android:layout_width="1dp"
+                android:text="Цена"
+                android:textSize="20dp"/>
+        </TableRow>
+    </TableLayout>
+
+</LinearLayout>

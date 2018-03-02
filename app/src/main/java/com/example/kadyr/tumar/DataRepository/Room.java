@@ -122,33 +122,72 @@ public class Room {
         Integer idClient=null;
 
         nameClient = nameClient.trim();
-
-        try{
-            Client newClient = new Client(0,nameClient,null,"");
-            idClient = (int)newClient.InsertWithExist();
-        }catch (Exception ex){
-            throw ex;
+        if(!nameClient.equals("")){
+            try{
+                Client newClient = new Client(0,nameClient,null,"");
+                idClient = (int)newClient.InsertWithExist();
+            }catch (Exception ex){
+                throw ex;
+            }
         }
 
-
-
         Checkining newCheckining = new Checkining(0, this.Id, PublicVariables.CurrentUser.GetId(), dateCheckin, dayCount, sum-paid, sum, idClient);
-        newCheckining.Insert();
+        newCheckining.setId((int)newCheckining.Insert());
 
         if(paid!=0)
         {
-            Payment newPayment = new Payment(0, paid, PublicVariables.CurrentUser.GetId(), this.Id, dateCheckin.getTime(), Constants.PaymentForCheckining);
+            Payment newPayment = new Payment(0, paid, PublicVariables.CurrentUser.GetId(), this.Id, dateCheckin.getTime(), Constants.PaymentForCheckining, newCheckining.getId());
             newPayment.Insert();
         }
-
 
         ContentValues cv = new ContentValues();
         cv.put("Status", Constants.RoomStatusBusy);
         cv.put("DateCheckout",dateCheckin.getTime() + dayCount*24*60*60*1000);
         DatabaseHelper.GetInstance().database.
         update("Rooms", cv, "Id=" + String.valueOf(Id), null);
+    }
 
+    public void EditCheckin(int idCheckining, Date dateCheckin, int dayCount, double sum, double paid, String nameClient ) throws Exception
+    {
+        try{
+            DatabaseHelper.GetInstance().database.beginTransaction();
+            Integer idClient=null;
+            nameClient = nameClient.trim();
+            if(!nameClient.equals("")){
+                try{
+                    Client newClient = new Client(0,nameClient,null,"");
+                    idClient = (int)newClient.InsertWithExist();
+                }catch (Exception ex){
+                    throw ex;
+                }
+            }
 
+            Checkining editingCheckining = new Checkining(idCheckining, this.Id, PublicVariables.CurrentUser.GetId(), dateCheckin, dayCount, sum-paid, sum, idClient);
+            editingCheckining.Update();
+
+            if(paid==0)
+            {
+                Payment editingPayment = new Payment(0, paid, PublicVariables.CurrentUser.GetId(), this.Id, dateCheckin.getTime(), Constants.PaymentForCheckining, idCheckining);
+                editingPayment.Delete();
+            }
+            else{
+                Payment editingPayment = new Payment(0, paid, PublicVariables.CurrentUser.GetId(), this.Id, dateCheckin.getTime(), Constants.PaymentForCheckining, idCheckining);
+                editingPayment.Update();
+            }
+
+            ContentValues cv = new ContentValues();
+            cv.put("Status", Constants.RoomStatusBusy);
+            cv.put("DateCheckout",dateCheckin.getTime() + dayCount*24*60*60*1000);
+            DatabaseHelper.GetInstance().database.
+                    update("Rooms", cv, "Id=" + String.valueOf(Id), null);
+            DatabaseHelper.GetInstance().database.setTransactionSuccessful();
+        }
+        catch(Exception ex){
+            throw ex;
+        }
+        finally {
+            DatabaseHelper.GetInstance().database.endTransaction();
+        }
 
     }
 

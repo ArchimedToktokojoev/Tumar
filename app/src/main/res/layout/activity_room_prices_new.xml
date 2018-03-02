@@ -1,19 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_height="wrap_content"
     android:layout_width="match_parent"
     android:orientation="vertical"
-    >
 
-    <SearchView
-        android:id="@+id/searchCLient"
-        android:layout_width="wrap_content"
+    >
+    <LinearLayout
         android:layout_height="wrap_content"
-        android:layout_marginBottom="5dp"
-        android:focusedByDefault="false"
-        android:iconifiedByDefault="false"
-        android:visibility="visible"></SearchView>
+        android:layout_width="match_parent"
+        android:background="@color/colorBackEditable"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+
+        android:orientation="horizontal">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="50dp"
+            android:textSize="20dp"
+            android:text="Дата"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="20dp"
+            android:layout_marginRight="20dp"
+            android:text="Тип комната"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="20dp"
+            android:text="Цена"/>
+
+    </LinearLayout>
+
 
     <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -23,13 +43,13 @@
         >
 
         <ListView
-            android:id="@+id/clientsList"
+            android:id="@+id/priceList"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:focusedByDefault="true"></ListView>
 
         <ImageButton
-            android:id="@+id/imageButton"
+            android:id="@+id/InsertRoomPrice"
             android:layout_width="65dp"
             android:layout_height="65dp"
             android:layout_alignParentBottom="true"
@@ -38,8 +58,9 @@
             android:layout_marginRight="25dp"
             android:background="@drawable/ic_add_circle"
             android:elevation="10dp"
-            android:onClick="OnClickAddCLient"
+            android:onClick="OnClickAddRoomPrice"
             />
     </RelativeLayout>
+
 
 </LinearLayout>

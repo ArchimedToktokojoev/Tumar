@@ -28,6 +28,7 @@ import android.widget.Toast;
 import com.example.kadyr.tumar.DataRepository.Checkining;
 import com.example.kadyr.tumar.DataRepository.Client;
 import com.example.kadyr.tumar.DataRepository.Room;
+import com.example.kadyr.tumar.DataRepository.RoomPrice;
 
 
 import java.text.SimpleDateFormat;
@@ -40,25 +41,27 @@ public class CheckInFragment extends android.app.DialogFragment implements View.
     List<Client> clients ;
     ClientAdapter clientAdapter;
     EditText clientName ;
+    EditText dayCount;
     ListView clientList;
+    int Regim;
+    int idEditingCheckining;
+    RoomPrice actualPrice ;
+    Room room;
+    View v;
+    Date dt = new Date();
 
 
     private OnCheckInFragmentListener mListener;
 
-    Room room;
-    View v;
-    Date dt = new Date();
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         v = inflater.inflate(R.layout.fragment_chaeck_in, null);
-
-
-
         Button btnOK = v.findViewById(R.id.btnOk);
         btnOK.setOnClickListener(new View.OnClickListener() {
                                             @Override
                                             public void onClick(View v) {
-                                                DoCheckIn();
+                                                if(Regim==Constants.RegimAdd)  DoCheckIn();
+                                                else EditCheckin();
                                                 CloseFragment();
                                             }});
         Button btnCancel = v.findViewById(R.id.btnCancel);
@@ -69,14 +72,13 @@ public class CheckInFragment extends android.app.DialogFragment implements View.
 
             }});
 
-
-        String idRoom = getArguments().getString("idRoom");
-        room = Room.GetRoom(Integer.valueOf(idRoom));
+        int idRoom = getArguments().getInt("idRoom");
+        Log.d("axa",String.valueOf(idRoom));
+        room = Room.GetRoom(idRoom);
         TextView vd = v.findViewById(R.id.viewTitle);
         vd.setText("Заселение.  Комната - "+room.getName());
         TextView dateIn = v.findViewById(R.id.dateIn ) ;
-
-
+        dayCount=v.findViewById(R.id.dayCount);
 
         dateIn.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -85,12 +87,37 @@ public class CheckInFragment extends android.app.DialogFragment implements View.
         tpd.show();
             }
         });
-        TextView tv = v.findViewById(R.id.dateIn);
-        tv.setText(String.valueOf(dt.getDate()) + "/" + (dt.getMonth()+1) + "/" + (dt.getYear()+1900));
+
+        if(getArguments().getInt(Constants.RegimKey)==Constants.RegimAdd){
+            Regim=Constants.RegimAdd;
+            dateIn.setText(String.valueOf(dt.getDate()) + "/" + (dt.getMonth()+1) + "/" + (dt.getYear()+1900));
+            dayCount.setText("3") ;
+        } else{
+            Regim = Constants.RegimEdit;
+            Checkining lastCheckin = Checkining.GetLastCheckining(idRoom);
+            idEditingCheckining = lastCheckin.getId();
+            dt = lastCheckin.getDateCheckin();
+            dateIn.setText(String.valueOf(dt.getDate()) + "/" + (dt.getMonth()+1) + "/" + (dt.getYear()+1900));
+
+            dayCount.setText(String.valueOf(lastCheckin.getDayCount()));
+
+            EditText totalSum = v.findViewById(R.id.totalSum);
+            totalSum.setText(String.valueOf(lastCheckin.getSum()));
+
+            EditText paidSum = v.findViewById(R.id.paidSum);
+            paidSum.setText(String.valueOf(lastCheckin.getSum()-lastCheckin.getDebt()));
+
+            String nameClient = Client.GetClient(lastCheckin.getIdClient()).getName();
+            EditText etNameClient = v.findViewById(R.id.nameClient);
+            etNameClient.setText(nameClient);
+        }
 
         clientName = v.findViewById(R.id.nameClient) ;
         clientList = v.findViewById(R.id.clientList);
         clientList.setVisibility(View.INVISIBLE);
+        actualPrice = RoomPrice.GetActualRoomPrice(room.getIdRoomType(),
+                CommonFunctions.StringToDate(dateIn.getText().toString()));
+        SetTotalSum();
         return v;
     }
 
@@ -121,10 +148,8 @@ public class CheckInFragment extends android.app.DialogFragment implements View.
                 }
                 // при изменении текста выполняем фильтрацию
                 public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-
-
                     clients=Client.GetFilteredArray(s.toString());
+                    clientAdapter.SetClients(clients);
                     clientAdapter.getFilter().filter(s.toString());
                 }
             });
@@ -147,6 +172,20 @@ public class CheckInFragment extends android.app.DialogFragment implements View.
                     clientName.setText(selectedItem.getName());
                 }
             });
+            dayCount.addTextChangedListener(new TextWatcher() {
+
+                public void afterTextChanged(Editable s) {
+                    SetTotalSum();
+                }
+
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+                }
+                // при изменении текста выполняем фильтрацию
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+                }
+            });
 
 
             clientList.setAdapter(clientAdapter);
@@ -154,6 +193,19 @@ public class CheckInFragment extends android.app.DialogFragment implements View.
         catch (SQLException ex){}
     }
 
+
+    private void SetTotalSum(){
+        EditText totalSum = v.findViewById(R.id.totalSum);
+        String dayCountString = dayCount.getText().toString();
+        if(dayCountString.isEmpty()) totalSum.setText("0") ;
+        else
+            totalSum.setText(String.valueOf(actualPrice.Price*Integer.valueOf(dayCountString)));
+        if(Regim==Constants.RegimAdd){
+            EditText paidSum = v.findViewById(R.id.paidSum);
+            paidSum.setText(totalSum.getText().toString());
+        }
+
+    }
 
     @Override
     public void onAttach(Context context) {
@@ -174,13 +226,40 @@ public class CheckInFragment extends android.app.DialogFragment implements View.
                               int dayOfMonth) {
 
             TextView tv = v.findViewById(R.id.dateIn);
-            tv.setText(String.valueOf(dayOfMonth) + "/" + monthOfYear + "/" + year);
-
+            String s = String.valueOf(dayOfMonth) + "/" + monthOfYear + "/" + year;
+            tv.setText(s);
+            actualPrice = RoomPrice.GetActualRoomPrice(room.getIdRoomType(),CommonFunctions.StringToDate(s));
+            SetTotalSum();
         }
     };
 
 
     public void onClick(View v) {
+
+    }
+
+    public void EditCheckin(){
+        TextView tv = v.findViewById(R.id.dateIn);
+        Date docDate = CommonFunctions.StringToDate(tv.getText().toString());
+        EditText etDayCnt = v.findViewById(R.id.dayCount);
+        int dayCount = Integer.valueOf(etDayCnt.getText().toString());
+
+        EditText etTotalSum = v.findViewById(R.id.totalSum);
+        double sumTotal = Double.valueOf(etTotalSum.getText().toString());
+
+        EditText etPaidSum = v.findViewById(R.id.paidSum);
+        double sumPaid = Double.valueOf(etPaidSum.getText().toString());
+
+        EditText etNameClient = v.findViewById(R.id.nameClient);
+        String nameClient = etNameClient.getText().toString();
+
+        if(room !=null)
+            try {
+                room.EditCheckin(idEditingCheckining, docDate, dayCount, sumTotal, sumPaid, nameClient);
+            } catch (Exception e) {
+                Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_LONG).show();
+            }
+        mListener.onFloorUpdate();
     }
 
 

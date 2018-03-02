@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <Button
+        android:layout_gravity="center_horizontal"
+        android:id="@+id/editButton"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:text="Изменить"
+        android:layout_margin="40dp"/>
+    <Button
+        android:layout_gravity="center_horizontal"
+        android:id="@+id/deleteButton"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:text="Удалить"
+        android:layout_margin="10dp"/>
+</LinearLayout>

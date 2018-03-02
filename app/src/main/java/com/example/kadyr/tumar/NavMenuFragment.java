@@ -4,6 +4,7 @@ import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,16 +24,22 @@ public class NavMenuFragment extends DialogFragment implements View.OnClickListe
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_navmenu, null);
 
-        Button btnClient = v.findViewById(R.id.client);
-        btnClient.setOnClickListener(this);
+        v.findViewById(R.id.client).setOnClickListener(this);
+        v.findViewById(R.id.priceRoom).setOnClickListener(this);
+        v.findViewById(R.id.priceKitchen).setOnClickListener(this);
 
         return v;
     }
 
     public void onClick(View v) {
-        Intent intent = new Intent(getActivity(), Clients.class);
-        startActivity(intent);
-        getActivity().getFragmentManager().beginTransaction().remove(this).commit();
+        Intent intent = null;
+        if(v.getId()==R.id.client)      intent = new Intent(getActivity(), Clients.class);
+        if(v.getId()==R.id.priceRoom)   intent = new Intent(getActivity(), RoomPriceActivity.class);
+
+        if(intent!=null){
+            startActivity(intent);
+            getActivity().getFragmentManager().beginTransaction().remove(this).commit();
+        }
     }
 
 

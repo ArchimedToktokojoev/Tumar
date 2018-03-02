@@ -16,6 +16,11 @@ public class Constants {
     public static final int PaymentForCheckining = 0;
     public static final int PaymentForKitchen = 1;
 
+    public static final int RegimEdit=1;
+    public static final int RegimAdd=2;
+
+    public static final String RegimKey="Regim";
+
 
 
 }

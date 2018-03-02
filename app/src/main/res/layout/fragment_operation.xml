@@ -73,7 +73,6 @@
         </Button>
 
 
-
         <Button
             android:id="@+id/doOut"
             android:layout_width="wrap_content"
@@ -88,6 +87,16 @@
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
             android:text="Бронирование"
+            android:layout_gravity="center_horizontal">
+        </Button>
+
+        <Button
+            android:id="@+id/editIn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:gravity="center"
+            android:text="Изменить"
             android:layout_gravity="center_horizontal">
         </Button>
 

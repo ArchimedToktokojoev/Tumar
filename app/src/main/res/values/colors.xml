@@ -7,9 +7,9 @@
     <color name="colorAccent">#FF4081</color>
     <color name="colorFilter">#446CB3</color>
     <color name="colorFilterText">#fff</color>
-    <color name="colorGreen">#4CAF50</color>
+    <color name="colorGreen">#4caf50</color>
     <color name="colorDeepOrange">#FF5722</color>
-    <color name="colorRed">#F44336</color>
+    <color name="colorRed">#f44336</color>
     <color name="colorEditable">#000000</color>
     <color name="colorBackEditable">#d7d5d4</color>
 </resources>

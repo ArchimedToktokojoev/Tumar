@@ -36,6 +36,7 @@ public class Clients extends AppCompatActivity implements AddClientFragment.onCl
         setContentView(R.layout.activity_clients);
 
 
+
         clientsList = findViewById(R.id.clientsList);
         clientName = findViewById(R.id.searchCLient);
         final List<Client> clients = Client.GetClients();
@@ -65,9 +66,7 @@ public class Clients extends AppCompatActivity implements AddClientFragment.onCl
     protected void onResume(){
         super.onResume();
         try{
-
             clients = Client.GetClients();
-            Log.e("axa", "onResume-"+String.valueOf(clients.size()));
             if(!clientName.getQuery().toString().isEmpty())
                 clientAdapter.getFilter().filter(clientName.getQuery().toString());
 

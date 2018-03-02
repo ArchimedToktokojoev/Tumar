@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
@@ -16,6 +17,9 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.example.kadyr.tumar.DataRepository.Client;
+
+import java.io.File;
+import java.io.IOException;
 
 /**
  * Created by Kadyr on 2/17/2018.
@@ -50,6 +54,8 @@ public class AddClientFragment extends android.app.DialogFragment implements Vie
     boolean Regim;
     final boolean Add = false;
     final boolean Edit = true;
+    final int CameraCode = 15;
+    final int GalleryCode = 25;
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -66,7 +72,16 @@ public class AddClientFragment extends android.app.DialogFragment implements Vie
             @Override
             public void onClick(View view){
                 Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                startActivityForResult(intent, 0);
+                startActivityForResult(intent, CameraCode);
+            }
+        });
+
+        ImageView gallery = v.findViewById(R.id.pictureFromGallery);
+        gallery.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view){
+                Intent intent = new Intent(Intent.ACTION_PICK,MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                startActivityForResult(intent, GalleryCode);
             }
         });
 
@@ -104,9 +119,26 @@ public class AddClientFragment extends android.app.DialogFragment implements Vie
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data){
         super.onActivityResult(requestCode, resultCode, data);
-        Bitmap bitmap = (Bitmap)data.getExtras().get("data");
-        avatar.setImageBitmap(bitmap);
-        avatar.setTag(null);
+        if(requestCode==CameraCode){
+            Bitmap bitmap = (Bitmap)data.getExtras().get("data");
+            avatar.setImageBitmap(bitmap);
+            avatar.setTag(null);
+        }
+        if(requestCode==GalleryCode){
+            Uri uri = data.getData();
+
+            Bitmap bitmap = null;
+
+            try {
+                bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), uri);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            avatar.setImageBitmap(bitmap);
+
+        }
+
+
     }
 
     public void onClick(View v1){

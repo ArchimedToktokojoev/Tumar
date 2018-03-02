@@ -15,15 +15,17 @@ public class Payment {
     private int IdRoom;
     private long Date;
     private int OperationType;
+    private int IdCheckining;
 
 
-    public Payment(int id, double sum, int idUser, int idRoom, long date, int operationType){
+    public Payment(int id, double sum, int idUser, int idRoom, long date, int operationType, int idCheckining){
         Id = id;
         Sum = sum;
         IdUser = idUser;
         IdRoom = idRoom;
         Date = date;
         OperationType = operationType;
+        IdCheckining = idCheckining;
     }
 
     public int getId(){ return Id;}
@@ -44,6 +46,9 @@ public class Payment {
     public int getOperationType(){ return OperationType;}
     public void setOperationType(int operationType){ OperationType = operationType;}
 
+    public int getIdCheckining(){return IdCheckining;}
+    public void setIdCheckining(int idCheckining){ IdCheckining = idCheckining;}
+
 
     public long Insert(){
 
@@ -53,6 +58,7 @@ public class Payment {
         cv.put("IdRoom", this.IdRoom);
         cv.put("Date", this.Date);
         cv.put("OperationType", this.OperationType);
+        cv.put("IdCheckining", this.IdCheckining);
 
         return  DatabaseHelper.GetInstance().database.insert("Payments", null, cv);
     }
@@ -73,6 +79,7 @@ public class Payment {
         cv.put("IdRoom", this.IdRoom);
         cv.put("Date", this.Date);
         cv.put("OperationType", this.OperationType);
+
 
         return DatabaseHelper.GetInstance().database.update("Payments", cv, whereClause, null);
     }

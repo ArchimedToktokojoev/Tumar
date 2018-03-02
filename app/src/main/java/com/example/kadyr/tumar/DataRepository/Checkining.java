@@ -1,10 +1,16 @@
 package com.example.kadyr.tumar.DataRepository;
 
 import android.content.ContentValues;
+import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 
 import com.example.kadyr.tumar.DatabaseHelper;
 
+import java.io.ByteArrayInputStream;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by Kadyr on 2/2/2018.
@@ -55,6 +61,29 @@ public class Checkining {
     public Integer getIdClient(){return IdClient;}
     public void setIdClient(Integer idClient){IdClient = idClient;}
 
+    public static Checkining GetLastCheckining(int idCheckinRoom){
+        Checkining lastCheckining=null;
+
+        Cursor cursor = DatabaseHelper.GetInstance().database.
+                rawQuery("SELECT * FROM Checkinings WHERE IdRoom=" + String.valueOf(idCheckinRoom) +
+                        " order by DateCheckin desc limit 1", null);
+
+        if(cursor.getCount()!=0){
+            cursor.moveToFirst();
+            int id = cursor.getInt(cursor.getColumnIndex("Id"));
+            int idRoom = cursor.getInt(cursor.getColumnIndex("IdRoom"));
+            int idUser = cursor.getInt(cursor.getColumnIndex("IdUser"));
+            Date dateCheckin = new Date(cursor.getLong(cursor.getColumnIndex("DateCheckin")));
+            int dayCount = cursor.getInt(cursor.getColumnIndex("DayCount"));
+            double debt = cursor.getDouble(cursor.getColumnIndex("Debt"));
+            double sum = cursor.getDouble(cursor.getColumnIndex("Sum"));
+            int idClient = cursor.getInt(cursor.getColumnIndex("IdClient"));
+            lastCheckining = new Checkining(id, idRoom, idUser, dateCheckin, dayCount, debt, sum, idClient);
+        }
+        cursor.close();
+
+        return lastCheckining;
+    }
 
     public long Insert(){
 
@@ -89,6 +118,6 @@ public class Checkining {
         cv.put("Sum", this.Sum);
         cv.put("IdClient",this.IdClient);
 
-        return DatabaseHelper.GetInstance().database.update("Checkining", cv, whereClause, null);
+        return DatabaseHelper.GetInstance().database.update("Checkinings", cv, whereClause, null);
     }
 }
