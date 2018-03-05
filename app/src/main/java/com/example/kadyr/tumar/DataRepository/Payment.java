@@ -84,4 +84,14 @@ public class Payment {
         return DatabaseHelper.GetInstance().database.update("Payments", cv, whereClause, null);
     }
 
+    public long UpdatePrice(){
+
+        
+        String whereClause = "Id" + "=" + String.valueOf(this.Id);
+        ContentValues cv = new ContentValues();
+        cv.put("Sum",this.Sum);
+
+        return DatabaseHelper.GetInstance().database.update("Payments", cv, whereClause, null);
+    }
+
 }

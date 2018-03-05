@@ -194,7 +194,7 @@ public class AddRoomPriceFragment extends android.app.DialogFragment implements 
                     }
                 catch (Exception ex){
                     Log.d("axa", ex.getMessage());
-                    Toast.makeText(getActivity(), ex.getMessage(), Toast.LENGTH_SHORT); ;
+                    Toast.makeText(getActivity(), ex.getMessage(), Toast.LENGTH_SHORT);
                 }
 
             }

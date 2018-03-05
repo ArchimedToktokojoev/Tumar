@@ -120,7 +120,7 @@ public class RoomPrice {
     }
 
 
-    public long UpdateWithParams(String dateOperation, String price, String roomTypeName) {
+    public long UpdateWithParams(String dateOperation, String price, String roomTypeName) throws Exception {
         SimpleDateFormat format = new SimpleDateFormat();
         format.applyPattern("dd/MM/yyyy");
         Date dt = null;
@@ -131,13 +131,13 @@ public class RoomPrice {
         }
         RoomType rt = RoomType.GetRoomTypeByName(roomTypeName);
         if (rt == null)
-            return -1;
-        //       throw new Exception("Тип комнаты не определен") ;
-
-
+            throw new Exception("Тип комнаты не определен");
         this.IdRoomType = rt.getId();
         this.DateOperation = dt;
         this.Price = Double.valueOf(price);
+
+
+
         return this.Update();
 
     }

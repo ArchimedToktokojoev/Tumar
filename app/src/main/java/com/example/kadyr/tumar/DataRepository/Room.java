@@ -151,6 +151,20 @@ public class Room {
     {
         try{
             DatabaseHelper.GetInstance().database.beginTransaction();
+
+            Cursor cursorForPaymentsId = DatabaseHelper.GetInstance().database.
+                    rawQuery("select Id from Payments where IdCheckining=" + String.valueOf(idCheckining) + " limit 1", null);
+
+            int idEditingPayment=0;
+            if(cursorForPaymentsId.getCount()!=0){
+                cursorForPaymentsId.moveToFirst();
+                idEditingPayment = cursorForPaymentsId.getInt(cursorForPaymentsId.getColumnIndex("Id"));
+            }
+
+                Payment editingPayment = new Payment(idEditingPayment, paid, PublicVariables.CurrentUser.GetId(), this.Id, dateCheckin.getTime(), Constants.PaymentForCheckining, idCheckining);
+                editingPayment.UpdatePrice();
+                Log.e("axa1", String.valueOf(editingPayment.getSum()));
+
             Integer idClient=null;
             nameClient = nameClient.trim();
             if(!nameClient.equals("")){
@@ -165,15 +179,6 @@ public class Room {
             Checkining editingCheckining = new Checkining(idCheckining, this.Id, PublicVariables.CurrentUser.GetId(), dateCheckin, dayCount, sum-paid, sum, idClient);
             editingCheckining.Update();
 
-            if(paid==0)
-            {
-                Payment editingPayment = new Payment(0, paid, PublicVariables.CurrentUser.GetId(), this.Id, dateCheckin.getTime(), Constants.PaymentForCheckining, idCheckining);
-                editingPayment.Delete();
-            }
-            else{
-                Payment editingPayment = new Payment(0, paid, PublicVariables.CurrentUser.GetId(), this.Id, dateCheckin.getTime(), Constants.PaymentForCheckining, idCheckining);
-                editingPayment.Update();
-            }
 
             ContentValues cv = new ContentValues();
             cv.put("Status", Constants.RoomStatusBusy);
